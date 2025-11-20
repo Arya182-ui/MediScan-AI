@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediScan AI - Breast Cancer Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="brand">
+                    <div class="logo-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="#4f46e5" stroke-width="2"/>
+                            <path d="M20 12V20L26 26" stroke="#4f46e5" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="20" r="3" fill="#4f46e5"/>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1>MediScan AI</h1>
+                        <p class="tagline">Advanced Breast Cancer Detection</p>
+                    </div>
+                </div>
+                <div class="nav-menu">
+                    <button class="about-toggle" onclick="toggleAboutModal()">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                        </svg>
+                        About Model
+                    </button>
+                    <label class="theme-toggle">
+                        <input type="checkbox" id="themeToggle" onchange="toggleTheme()">
+                        <span class="toggle-slider">
+                            <span class="toggle-icon sun">☀️</span>
+                            <span class="toggle-icon moon">🌙</span>
+                        </span>
+                    </label>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- About Model Modal -->
+    <div id="aboutModal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 20px; right: 60px; opacity: 0.06; font-size: 120px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none; z-index: 0;">ARYA</div>
+            <div class="modal-header">
+                <h2>About Our AI Model</h2>
+                <button class="modal-close" onclick="toggleAboutModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="model-info-grid">
+                    <div class="info-card">
+                        <h3>🎯 Model Type</h3>
+                        <p>Random Forest Classifier with SMOTE preprocessing</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📊 Performance</h3>
+                        <p>97.4% Accuracy | 98.6% Precision | 96.5% Recall</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>📁 Training Data</h3>
+                        <p>Wisconsin Breast Cancer Dataset - 569 samples</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>🔬 Features</h3>
+                        <p>30 numerical features from cell nucleus measurements</p>
+                    </div>
+                </div>
+                <div class="model-description">
+                    <h3>How It Works</h3>
+                    <p>Our AI model analyzes 30 different measurements from cell nucleus images including radius, texture, perimeter, area, smoothness, and other characteristics. Using ensemble learning with Random Forest and balanced training via SMOTE, the model achieves high accuracy in distinguishing between benign and malignant tumors.</p>
+                    <div class="disclaimer-box">
+                        <strong>⚠️ Medical Disclaimer:</strong> This tool is for educational and research purposes only. Always consult qualified healthcare professionals for medical diagnosis and treatment decisions.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Modal -->
+    <div id="featuresModal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 20px; right: 60px; opacity: 0.06; font-size: 120px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none; z-index: 0;">ARYA</div>
+            <div class="modal-header">
+                <h2>Key Features</h2>
+                <button class="modal-close" onclick="toggleModal('featuresModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🎯</div>
+                        <h3>High Accuracy</h3>
+                        <p>97.4% accuracy rate powered by Random Forest algorithm with SMOTE preprocessing for balanced predictions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Fast Analysis</h3>
+                        <p>Results in under 2 seconds. Upload data and get instant predictions with confidence scores.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <h3>Detailed Reports</h3>
+                        <p>Comprehensive analysis with probability distributions, risk levels, and visual charts.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Secure & Private</h3>
+                        <p>All data processing happens securely. No patient data is stored on our servers.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">📤</div>
+                        <h3>Batch Processing</h3>
+                        <p>Upload CSV files to analyze multiple cases at once. Perfect for research and screening programs.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🏥</div>
+                        <h3>Clinical Integration</h3>
+                        <p>Designed to complement clinical judgment, not replace it. Built with healthcare professionals in mind.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Modal -->
+    <div id="howItWorksModal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 20px; right: 60px; opacity: 0.06; font-size: 120px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none; z-index: 0;">ARYA</div>
+            <div class="modal-header">
+                <h2>How It Works</h2>
+                <button class="modal-close" onclick="toggleModal('howItWorksModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="steps-container">
+                    <div class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Data Collection</h3>
+                            <p>Cell nucleus measurements are extracted from fine needle aspiration (FNA) biopsies. The system analyzes 30 numerical features including radius, texture, perimeter, area, smoothness, compactness, concavity, symmetry, and fractal dimension.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Preprocessing</h3>
+                            <p>Data is normalized using StandardScaler to ensure all features contribute equally. SMOTE (Synthetic Minority Oversampling Technique) balances the dataset to prevent bias toward the majority class.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Model Prediction</h3>
+                            <p>Our Random Forest classifier with 100 decision trees analyzes the features. The ensemble method combines multiple decision trees to make accurate predictions and reduce overfitting.</p>
+                        </div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h3>Results & Interpretation</h3>
+                            <p>The system provides a diagnosis (Benign/Malignant), confidence score, probability distribution, and risk level assessment. Results are presented in an easy-to-understand format for clinical decision support.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Documentation Modal -->
+    <div id="documentationModal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 20px; right: 60px; opacity: 0.06; font-size: 120px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none; z-index: 0;">ARYA</div>
+            <div class="modal-header">
+                <h2>Documentation</h2>
+                <button class="modal-close" onclick="toggleModal('documentationModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="doc-section">
+                    <h3>📋 Input Data Format</h3>
+                    <p>The system accepts 30 numerical features extracted from digitized images of breast mass FNA:</p>
+                    <ul>
+                        <li><strong>Mean values (10 features):</strong> radius, texture, perimeter, area, smoothness, compactness, concavity, concave points, symmetry, fractal dimension</li>
+                        <li><strong>Standard error (10 features):</strong> Same measurements with "_se" suffix</li>
+                        <li><strong>Worst values (10 features):</strong> Largest values with "_worst" suffix</li>
+                    </ul>
+                </div>
+                <div class="doc-section">
+                    <h3>📊 API Endpoints</h3>
+                    <ul>
+                        <li><code>/predict</code> - Single patient prediction</li>
+                        <li><code>/predict_batch</code> - Batch CSV upload</li>
+                        <li><code>/model_info</code> - Model metadata and statistics</li>
+                        <li><code>/health</code> - System health check</li>
+                    </ul>
+                </div>
+                <div class="doc-section">
+                    <h3>💾 CSV Format for Batch Upload</h3>
+                    <p>CSV files should contain all 30 features as columns. The system will process each row as a separate case and return comprehensive results for all samples.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 20px; right: 60px; opacity: 0.06; font-size: 120px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none; z-index: 0;">ARYA</div>
+            <div class="modal-header">
+                <h2>Privacy Policy</h2>
+                <button class="modal-close" onclick="toggleModal('privacyModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="doc-section">
+                    <h3>🔒 Data Protection</h3>
+                    <p>We take your privacy seriously. MediScan AI is designed with privacy-first principles:</p>
+                    <ul>
+                        <li><strong>No Data Storage:</strong> Patient data is processed in real-time and not stored on our servers</li>
+                        <li><strong>Secure Processing:</strong> All data transmission uses industry-standard encryption</li>
+                        <li><strong>Anonymization:</strong> We recommend removing personal identifiers before upload</li>
+                        <li><strong>Local Processing:</strong> The model runs on our secure servers with no third-party data sharing</li>
+                    </ul>
+                </div>
+                <div class="doc-section">
+                    <h3>👤 User Responsibility</h3>
+                    <p>Healthcare providers are responsible for:</p>
+                    <ul>
+                        <li>Obtaining proper patient consent before using this tool</li>
+                        <li>Ensuring compliance with local healthcare data regulations (HIPAA, GDPR, etc.)</li>
+                        <li>Using results as supportive information, not sole diagnostic criteria</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Modal -->
+    <div id="supportModal" class="modal">
+        <div class="modal-content">
+            <div style="position: absolute; top: 20px; right: 60px; opacity: 0.06; font-size: 120px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none; z-index: 0;">ARYA</div>
+            <div class="modal-header">
+                <h2>Support & Help</h2>
+                <button class="modal-close" onclick="toggleModal('supportModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="support-section">
+                    <h3>📧 Contact Us</h3>
+                    <p>Need help? Our support team is here to assist you:</p>
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:support@mediscan.ai">support@mediscan.ai</a></li>
+                        <li><strong>Phone:</strong> +1 (234) 567-890</li>
+                        <li><strong>Response Time:</strong> Within 24 hours</li>
+                    </ul>
+                </div>
+                <div class="support-section">
+                    <h3>❓ Frequently Asked Questions</h3>
+                    <div class="faq-item">
+                        <strong>Q: How accurate is the model?</strong>
+                        <p>A: The model achieves 97.4% accuracy on test data, with 98.6% precision and 96.5% recall.</p>
+                    </div>
+                    <div class="faq-item">
+                        <strong>Q: Can I use this for clinical diagnosis?</strong>
+                        <p>A: This tool is designed to assist healthcare professionals, not replace clinical judgment. Always verify with standard diagnostic procedures.</p>
+                    </div>
+                    <div class="faq-item">
+                        <strong>Q: What file format do you accept?</strong>
+                        <p>A: We accept CSV files with 30 numerical features matching the Wisconsin Breast Cancer dataset format.</p>
+                    </div>
+                </div>
+                <div class="support-section">
+                    <h3>🐛 Report Issues</h3>
+                    <p>Found a bug or have a suggestion? Email us at <a href="mailto:bugs@mediscan.ai">bugs@mediscan.ai</a> with detailed information.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-dot"></span>
+                    <span>Powered by Advanced Machine Learning</span>
+                </div>
+                <div style="position: absolute; top: 10px; right: 20px; opacity: 0.08; font-size: 80px; font-weight: 900; color: #4f46e5; pointer-events: none; user-select: none;">ARYA</div>
+                <h2 class="hero-title">Early Detection Saves Lives</h2>
+                <p class="hero-subtitle">Our AI-powered system analyzes medical data with 97% accuracy, helping healthcare professionals make faster, more confident decisions.</p>
+                
+                {% if metadata %}
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">{{ "%.1f"|format(metadata.test_accuracy * 100) }}%</span>
+                        <span class="hero-stat-label">Accuracy Rate</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">{{ "%.1f"|format(metadata.test_precision * 100) }}%</span>
+                        <span class="hero-stat-label">Precision</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">10K+</span>
+                        <span class="hero-stat-label">Cases Analyzed</span>
+                    </div>
+                    <div class="hero-stat">
+                        <span class="hero-stat-number">&lt;2s</span>
+                        <span class="hero-stat-label">Analysis Time</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content Container -->
+    <div class="container" style="margin-top: 60px;">
+
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <div class="tab-indicator"></div>   
+            <button class="tab-button" onclick="switchTab('single')">
+                �‍⚕️ Manual Entry (Doctors Only)
+            </button>
+            <button class="tab-button active" onclick="switchTab('upload')">
+                📤 Upload Report (Easy)
+            </button>
+            <button class="tab-button" onclick="switchTab('batch')">
+                � Batch Upload (CSV)
+            </button>
+
+        </div>
+
+        <!-- Upload Report Tab (NEW - Super Easy) -->
+        <div id="upload-tab" class="tab-content active">
+            <div class="card">
+                <h2>📤 Upload Medical Report</h2>
+                <p class="form-description">Simply upload your medical report or enter patient ID for instant analysis</p>
+                
+                <div class="upload-options">
+                    <!-- Patient ID Search -->
+                    <div class="patient-search-section">
+                        <h3>� Option 1: Search by Patient ID</h3>
+                        <p class="info-text">Enter patient ID to retrieve existing medical records</p>
+                        
+                        <div class="search-box">
+                            <input type="text" id="patientId" placeholder="Enter Patient ID (e.g., PAT001, PAT002)" class="patient-input">
+                            <button class="btn btn-primary" onclick="searchPatient()">
+                                🔎 Search & Analyze
+                            </button>
+                        </div>
+
+                        <div class="demo-ids">
+                            <p><strong>Demo Patient IDs:</strong></p>
+                            <div class="demo-chips">
+                                <span class="demo-chip" onclick="quickSearch('PAT001')">PAT001 (Low Risk)</span>
+                                <span class="demo-chip" onclick="quickSearch('PAT002')">PAT002 (Low Risk)</span>
+                                <span class="demo-chip warning-chip" onclick="quickSearch('PAT003')">PAT003 (High Risk)</span>
+                                <span class="demo-chip warning-chip" onclick="quickSearch('PAT004')">PAT004 (High Risk)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <!-- File Upload -->
+                    <div class="file-upload-section">
+                        <h3>📄 Option 2: Upload Medical Report</h3>
+                        <p class="info-text">Upload CSV file with patient medical data</p>
+                        
+                        <div class="upload-zone" id="singleUploadZone">
+                            <div class="upload-icon">📋</div>
+                            <h4>Drag & Drop Report File Here</h4>
+                            <p>Supported: CSV files with medical measurements</p>
+                            <input type="file" id="singleReportFile" accept=".csv" style="display: none;" onchange="handleSingleReportUpload(event)">
+                            <button class="btn btn-secondary" onclick="document.getElementById('singleReportFile').click()">
+                                📂 Browse Files
+                            </button>
+                        </div>
+
+                        <div id="singleFileInfo" class="file-info-box" style="display: none;"></div>
+                    </div>
+
+                    <!-- Sample Template Download -->
+                    <div class="template-section">
+                        <h3>📥 Need a Template?</h3>
+                        <p class="info-text">Download sample CSV template to see required format</p>
+                        <button class="btn btn-outline" onclick="downloadTemplate()">
+                            📥 Download CSV Template
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading Spinner -->
+                <div id="uploadLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing medical data...</p>
+                </div>
+
+                <!-- Result Display -->
+                <div id="uploadResult" class="result" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Single Prediction Form (For Doctors) -->
+        <div id="single-tab" class="tab-content">
+            <div class="card">
+                <h2>�‍⚕️ Manual Medical Data Entry (For Healthcare Professionals)</h2>
+                <p class="form-description">Complete 30-parameter medical assessment form</p>
+                
+                <form id="predictionForm" onsubmit="handleSinglePredict(event)">
+                    <div class="form-sections">
+                        <!-- Mean Features -->
+                        <div class="form-section">
+                            <h3>📏 Mean Measurements</h3>
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label for="radius_mean">Radius Mean</label>
+                                    <input type="number" step="any" id="radius_mean" name="radius_mean" required placeholder="e.g., 17.99">
+                                </div>
+                                <div class="input-group">
+                                    <label for="texture_mean">Texture Mean</label>
+                                    <input type="number" step="any" id="texture_mean" name="texture_mean" required placeholder="e.g., 10.38">
+                                </div>
+                                <div class="input-group">
+                                    <label for="perimeter_mean">Perimeter Mean</label>
+                                    <input type="number" step="any" id="perimeter_mean" name="perimeter_mean" required placeholder="e.g., 122.8">
+                                </div>
+                                <div class="input-group">
+                                    <label for="area_mean">Area Mean</label>
+                                    <input type="number" step="any" id="area_mean" name="area_mean" required placeholder="e.g., 1001">
+                                </div>
+                                <div class="input-group">
+                                    <label for="smoothness_mean">Smoothness Mean</label>
+                                    <input type="number" step="any" id="smoothness_mean" name="smoothness_mean" required placeholder="e.g., 0.1184">
+                                </div>
+                                <div class="input-group">
+                                    <label for="compactness_mean">Compactness Mean</label>
+                                    <input type="number" step="any" id="compactness_mean" name="compactness_mean" required placeholder="e.g., 0.2776">
+                                </div>
+                                <div class="input-group">
+                                    <label for="concavity_mean">Concavity Mean</label>
+                                    <input type="number" step="any" id="concavity_mean" name="concavity_mean" required placeholder="e.g., 0.3001">
+                                </div>
+                                <div class="input-group">
+                                    <label for="concave points_mean">Concave Points Mean</label>
+                                    <input type="number" step="any" id="concave points_mean" name="concave points_mean" required placeholder="e.g., 0.1471">
+                                </div>
+                                <div class="input-group">
+                                    <label for="symmetry_mean">Symmetry Mean</label>
+                                    <input type="number" step="any" id="symmetry_mean" name="symmetry_mean" required placeholder="e.g., 0.2419">
+                                </div>
+                                <div class="input-group">
+                                    <label for="fractal_dimension_mean">Fractal Dimension Mean</label>
+                                    <input type="number" step="any" id="fractal_dimension_mean" name="fractal_dimension_mean" required placeholder="e.g., 0.07871">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- SE Features -->
+                        <div class="form-section">
+                            <h3>📊 Standard Error Measurements</h3>
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label for="radius_se">Radius SE</label>
+                                    <input type="number" step="any" id="radius_se" name="radius_se" required placeholder="e.g., 1.095">
+                                </div>
+                                <div class="input-group">
+                                    <label for="texture_se">Texture SE</label>
+                                    <input type="number" step="any" id="texture_se" name="texture_se" required placeholder="e.g., 0.9053">
+                                </div>
+                                <div class="input-group">
+                                    <label for="perimeter_se">Perimeter SE</label>
+                                    <input type="number" step="any" id="perimeter_se" name="perimeter_se" required placeholder="e.g., 8.589">
+                                </div>
+                                <div class="input-group">
+                                    <label for="area_se">Area SE</label>
+                                    <input type="number" step="any" id="area_se" name="area_se" required placeholder="e.g., 153.4">
+                                </div>
+                                <div class="input-group">
+                                    <label for="smoothness_se">Smoothness SE</label>
+                                    <input type="number" step="any" id="smoothness_se" name="smoothness_se" required placeholder="e.g., 0.006399">
+                                </div>
+                                <div class="input-group">
+                                    <label for="compactness_se">Compactness SE</label>
+                                    <input type="number" step="any" id="compactness_se" name="compactness_se" required placeholder="e.g., 0.04904">
+                                </div>
+                                <div class="input-group">
+                                    <label for="concavity_se">Concavity SE</label>
+                                    <input type="number" step="any" id="concavity_se" name="concavity_se" required placeholder="e.g., 0.05373">
+                                </div>
+                                <div class="input-group">
+                                    <label for="concave points_se">Concave Points SE</label>
+                                    <input type="number" step="any" id="concave points_se" name="concave points_se" required placeholder="e.g., 0.01587">
+                                </div>
+                                <div class="input-group">
+                                    <label for="symmetry_se">Symmetry SE</label>
+                                    <input type="number" step="any" id="symmetry_se" name="symmetry_se" required placeholder="e.g., 0.03003">
+                                </div>
+                                <div class="input-group">
+                                    <label for="fractal_dimension_se">Fractal Dimension SE</label>
+                                    <input type="number" step="any" id="fractal_dimension_se" name="fractal_dimension_se" required placeholder="e.g., 0.006193">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Worst Features -->
+                        <div class="form-section">
+                            <h3>⚠️ Worst Measurements</h3>
+                            <div class="input-grid">
+                                <div class="input-group">
+                                    <label for="radius_worst">Radius Worst</label>
+                                    <input type="number" step="any" id="radius_worst" name="radius_worst" required placeholder="e.g., 25.38">
+                                </div>
+                                <div class="input-group">
+                                    <label for="texture_worst">Texture Worst</label>
+                                    <input type="number" step="any" id="texture_worst" name="texture_worst" required placeholder="e.g., 17.33">
+                                </div>
+                                <div class="input-group">
+                                    <label for="perimeter_worst">Perimeter Worst</label>
+                                    <input type="number" step="any" id="perimeter_worst" name="perimeter_worst" required placeholder="e.g., 184.6">
+                                </div>
+                                <div class="input-group">
+                                    <label for="area_worst">Area Worst</label>
+                                    <input type="number" step="any" id="area_worst" name="area_worst" required placeholder="e.g., 2019">
+                                </div>
+                                <div class="input-group">
+                                    <label for="smoothness_worst">Smoothness Worst</label>
+                                    <input type="number" step="any" id="smoothness_worst" name="smoothness_worst" required placeholder="e.g., 0.1622">
+                                </div>
+                                <div class="input-group">
+                                    <label for="compactness_worst">Compactness Worst</label>
+                                    <input type="number" step="any" id="compactness_worst" name="compactness_worst" required placeholder="e.g., 0.6656">
+                                </div>
+                                <div class="input-group">
+                                    <label for="concavity_worst">Concavity Worst</label>
+                                    <input type="number" step="any" id="concavity_worst" name="concavity_worst" required placeholder="e.g., 0.7119">
+                                </div>
+                                <div class="input-group">
+                                    <label for="concave points_worst">Concave Points Worst</label>
+                                    <input type="number" step="any" id="concave points_worst" name="concave points_worst" required placeholder="e.g., 0.2654">
+                                </div>
+                                <div class="input-group">
+                                    <label for="symmetry_worst">Symmetry Worst</label>
+                                    <input type="number" step="any" id="symmetry_worst" name="symmetry_worst" required placeholder="e.g., 0.4601">
+                                </div>
+                                <div class="input-group">
+                                    <label for="fractal_dimension_worst">Fractal Dimension Worst</label>
+                                    <input type="number" step="any" id="fractal_dimension_worst" name="fractal_dimension_worst" required placeholder="e.g., 0.1189">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">
+                            🔬 Predict Diagnosis
+                        </button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">
+                            🔄 Reset Form
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Loading Spinner -->
+                <div id="loading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing data...</p>
+                </div>
+
+                <!-- Result Display -->
+                <div id="result" class="result" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Batch Upload Tab -->
+        <div id="batch-tab" class="tab-content">
+            <div class="card">
+                <h2>📁 Batch Prediction</h2>
+                <p class="form-description">Upload a CSV file with multiple patient records</p>
+                
+                <div class="upload-section">
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-icon">📤</div>
+                        <h3>Drag & Drop CSV File Here</h3>
+                        <p>or click to browse</p>
+                        <input type="file" id="csvFile" accept=".csv" onchange="handleFileSelect(event)" style="display: none;">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('csvFile').click()">
+                            📂 Choose File
+                        </button>
+                    </div>
+
+                    <div id="fileInfo" class="file-info" style="display: none;"></div>
+
+                    <button id="uploadBtn" type="button" class="btn btn-primary" onclick="handleBatchUpload()" style="display: none;">
+                        🚀 Start Prediction
+                    </button>
+                </div>
+
+                <!-- Batch Loading -->
+                <div id="batchLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Processing batch predictions...</p>
+                </div>
+
+                <!-- Batch Results -->
+                <div id="batchResult" class="batch-result" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                            <circle cx="20" cy="20" r="18" stroke="#94a3b8" stroke-width="2"/>
+                            <path d="M20 12V20L26 26" stroke="#94a3b8" stroke-width="2" stroke-linecap="round"/>
+                            <circle cx="20" cy="20" r="3" fill="#94a3b8"/>
+                        </svg>
+                        <span>MediScan AI</span>
+                    </div>
+                    <p class="footer-desc">Advanced breast cancer detection powered by machine learning. Helping healthcare professionals make faster, more accurate diagnoses.</p>
+                </div>
+
+                <div class="footer-links-section">
+                    <div class="footer-column">
+                        <h4>Quick Links</h4>
+                        <ul class="footer-links">
+                            <li><a href="#" onclick="toggleAboutModal(); return false;">About Model</a></li>
+                            <li><a href="#" onclick="toggleModal('featuresModal'); return false;">Features</a></li>
+                            <li><a href="#" onclick="toggleModal('howItWorksModal'); return false;">How It Works</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <ul class="footer-links">
+                            <li><a href="#" onclick="toggleModal('documentationModal'); return false;">Documentation</a></li>
+                            <li><a href="#" onclick="toggleModal('privacyModal'); return false;">Privacy Policy</a></li>
+                            <li><a href="#" onclick="toggleModal('supportModal'); return false;">Support</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Contact</h4>
+                        <ul class="footer-links">
+                            <li><a href="mailto:info@mediscan.ai">info@mediscan.ai</a></li>
+                            <li><a href="tel:+1234567890">+1 (234) 567-890</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-disclaimer">
+                    <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                    <p><strong>Medical Disclaimer:</strong> This tool is designed to assist healthcare professionals and is not a substitute for professional medical advice, diagnosis, or treatment. Always seek the advice of qualified health providers.</p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2025 MediScan AI. All rights reserved. <span style="opacity: 0.4; font-size: 11px; margin-left: 8px;">// Arya</span></p>
+                    <p class="footer-tech">Built with <span class="heart">♥</span> using Machine Learning | Model Accuracy: 97.4%</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Patient database (Demo data)
+        const patientDatabase = {
+            'PAT001': {
+                name: 'Maria Garcia',
+                age: 45,
+                id: 'PAT001',
+                data: {
+                    radius_mean: 13.54, texture_mean: 14.36, perimeter_mean: 87.46, area_mean: 566.3,
+                    smoothness_mean: 0.09779, compactness_mean: 0.08129, concavity_mean: 0.06664,
+                    'concave points_mean': 0.04781, symmetry_mean: 0.1885, fractal_dimension_mean: 0.05766,
+                    radius_se: 0.2699, texture_se: 0.7886, perimeter_se: 2.058, area_se: 23.56,
+                    smoothness_se: 0.008462, compactness_se: 0.0146, concavity_se: 0.02387,
+                    'concave points_se': 0.01315, symmetry_se: 0.0198, fractal_dimension_se: 0.0023,
+                    radius_worst: 15.11, texture_worst: 19.26, perimeter_worst: 99.7, area_worst: 711.2,
+                    smoothness_worst: 0.144, compactness_worst: 0.1773, concavity_worst: 0.239,
+                    'concave points_worst': 0.1288, symmetry_worst: 0.2977, fractal_dimension_worst: 0.07259
+                }
+            },
+            'PAT002': {
+                name: 'Sarah Johnson',
+                age: 52,
+                id: 'PAT002',
+                data: {
+                    radius_mean: 12.46, texture_mean: 24.04, perimeter_mean: 83.97, area_mean: 475.9,
+                    smoothness_mean: 0.1186, compactness_mean: 0.2396, concavity_mean: 0.2273,
+                    'concave points_mean': 0.08543, symmetry_mean: 0.203, fractal_dimension_mean: 0.08243,
+                    radius_se: 0.2976, texture_se: 1.599, perimeter_se: 2.039, area_se: 23.94,
+                    smoothness_se: 0.007149, compactness_se: 0.07217, concavity_se: 0.07743,
+                    'concave points_se': 0.01432, symmetry_se: 0.01789, fractal_dimension_se: 0.01008,
+                    radius_worst: 15.09, texture_worst: 40.68, perimeter_worst: 97.65, area_worst: 711.4,
+                    smoothness_worst: 0.1853, compactness_worst: 1.058, concavity_worst: 1.105,
+                    'concave points_worst': 0.221, symmetry_worst: 0.4366, fractal_dimension_worst: 0.2075
+                }
+            },
+            'PAT003': {
+                name: 'Emily Davis',
+                age: 58,
+                id: 'PAT003',
+                data: {
+                    radius_mean: 17.99, texture_mean: 10.38, perimeter_mean: 122.8, area_mean: 1001,
+                    smoothness_mean: 0.1184, compactness_mean: 0.2776, concavity_mean: 0.3001,
+                    'concave points_mean': 0.1471, symmetry_mean: 0.2419, fractal_dimension_mean: 0.07871,
+                    radius_se: 1.095, texture_se: 0.9053, perimeter_se: 8.589, area_se: 153.4,
+                    smoothness_se: 0.006399, compactness_se: 0.04904, concavity_se: 0.05373,
+                    'concave points_se': 0.01587, symmetry_se: 0.03003, fractal_dimension_se: 0.006193,
+                    radius_worst: 25.38, texture_worst: 17.33, perimeter_worst: 184.6, area_worst: 2019,
+                    smoothness_worst: 0.1622, compactness_worst: 0.6656, concavity_worst: 0.7119,
+                    'concave points_worst': 0.2654, symmetry_worst: 0.4601, fractal_dimension_worst: 0.1189
+                }
+            },
+            'PAT004': {
+                name: 'Jennifer Wilson',
+                age: 61,
+                id: 'PAT004',
+                data: {
+                    radius_mean: 20.57, texture_mean: 17.77, perimeter_mean: 132.9, area_mean: 1326,
+                    smoothness_mean: 0.08474, compactness_mean: 0.07864, concavity_mean: 0.0869,
+                    'concave points_mean': 0.07017, symmetry_mean: 0.1812, fractal_dimension_mean: 0.05667,
+                    radius_se: 0.5435, texture_se: 0.7339, perimeter_se: 3.398, area_se: 74.08,
+                    smoothness_se: 0.005225, compactness_se: 0.01308, concavity_se: 0.0186,
+                    'concave points_se': 0.0134, symmetry_se: 0.01389, fractal_dimension_se: 0.003532,
+                    radius_worst: 24.99, texture_worst: 23.41, perimeter_worst: 158.8, area_worst: 1956,
+                    smoothness_worst: 0.1238, compactness_worst: 0.1866, concavity_worst: 0.2416,
+                    'concave points_worst': 0.186, symmetry_worst: 0.275, fractal_dimension_worst: 0.08902
+                }
+            }
+        };
+
+        // Quick search function
+        function quickSearch(patientId) {
+            document.getElementById('patientId').value = patientId;
+            searchPatient();
+        }
+
+        // Search patient by ID
+        function searchPatient() {
+            const patientId = document.getElementById('patientId').value.trim().toUpperCase();
+            
+            if (!patientId) {
+                alert('Please enter a Patient ID');
+                return;
+            }
+
+            const patient = patientDatabase[patientId];
+            
+            if (!patient) {
+                displayUploadError(`Patient ID "${patientId}" not found in database. Please try PAT001, PAT002, PAT003, or PAT004.`);
+                return;
+            }
+
+            // Show loading
+            document.getElementById('uploadLoading').style.display = 'block';
+            document.getElementById('uploadResult').style.display = 'none';
+
+            // Prepare form data
+            const formData = new FormData();
+            for (const [key, value] of Object.entries(patient.data)) {
+                formData.append(key, value);
+            }
+
+            // Make prediction
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('uploadLoading').style.display = 'none';
+                if (data.success) {
+                    displayUploadResult(data, patient);
+                } else {
+                    displayUploadError(data.error);
+                }
+            })
+            .catch(error => {
+                document.getElementById('uploadLoading').style.display = 'none';
+                displayUploadError('Network error. Please try again.');
+            });
+        }
+
+        // Handle single report file upload
+        function handleSingleReportUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const fileInfo = document.getElementById('singleFileInfo');
+            fileInfo.innerHTML = `
+                <p>✅ File: <strong>${file.name}</strong></p>
+                <p>Size: ${(file.size / 1024).toFixed(2)} KB</p>
+                <button class="btn btn-primary" onclick="processSingleReport()">🚀 Analyze Report</button>
+            `;
+            fileInfo.style.display = 'block';
+        }
+
+        // Process single report
+        function processSingleReport() {
+            const fileInput = document.getElementById('singleReportFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                alert('Please select a file first');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            document.getElementById('uploadLoading').style.display = 'block';
+            document.getElementById('uploadResult').style.display = 'none';
+
+            fetch('/predict_batch', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('uploadLoading').style.display = 'none';
+                if (data.success && data.results.length > 0) {
+                    // Display first result
+                    const result = data.results[0];
+                    const fakeResult = {
+                        success: true,
+                        prediction: result.prediction,
+                        diagnosis: result.diagnosis,
+                        confidence: result.confidence,
+                        probability_benign: result.probability_benign,
+                        probability_malignant: result.probability_malignant,
+                        risk_level: result.risk_level,
+                        timestamp: data.timestamp
+                    };
+                    displayUploadResult(fakeResult, { name: 'Patient', id: 'From CSV', age: 'N/A' });
+                } else {
+                    displayUploadError(data.error || 'No valid data found in file');
+                }
+            })
+            .catch(error => {
+                document.getElementById('uploadLoading').style.display = 'none';
+                displayUploadError('Error processing file. Please check format.');
+            });
+        }
+
+        // Download template
+        function downloadTemplate() {
+            const headers = [
+                'radius_mean', 'texture_mean', 'perimeter_mean', 'area_mean',
+                'smoothness_mean', 'compactness_mean', 'concavity_mean',
+                'concave points_mean', 'symmetry_mean', 'fractal_dimension_mean',
+                'radius_se', 'texture_se', 'perimeter_se', 'area_se',
+                'smoothness_se', 'compactness_se', 'concavity_se',
+                'concave points_se', 'symmetry_se', 'fractal_dimension_se',
+                'radius_worst', 'texture_worst', 'perimeter_worst', 'area_worst',
+                'smoothness_worst', 'compactness_worst', 'concavity_worst',
+                'concave points_worst', 'symmetry_worst', 'fractal_dimension_worst'
+            ];
+            
+            const sampleRow = [
+                '13.54', '14.36', '87.46', '566.3', '0.09779', '0.08129', '0.06664',
+                '0.04781', '0.1885', '0.05766', '0.2699', '0.7886', '2.058', '23.56',
+                '0.008462', '0.0146', '0.02387', '0.01315', '0.0198', '0.0023',
+                '15.11', '19.26', '99.7', '711.2', '0.144', '0.1773', '0.239',
+                '0.1288', '0.2977', '0.07259'
+            ];
+
+            const csvContent = headers.join(',') + '\n' + sampleRow.join(',');
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'cancer_detection_template.csv';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Display upload result with patient info
+        function displayUploadResult(data, patient) {
+            const resultDiv = document.getElementById('uploadResult');
+            const isMalignant = data.prediction === 1;
+            const resultClass = isMalignant ? 'result-malignant' : 'result-benign';
+
+            resultDiv.innerHTML = `
+                <div class="${resultClass}">
+                    <div class="patient-info">
+                        <h3>👤 Patient Information</h3>
+                        <p><strong>Name:</strong> ${patient.name}</p>
+                        <p><strong>ID:</strong> ${patient.id}</p>
+                        <p><strong>Age:</strong> ${patient.age}</p>
+                    </div>
+                    <hr style="margin: 20px 0; border: 1px solid rgba(0,0,0,0.1);">
+                    <h3>${isMalignant ? '⚠️' : '✅'} Diagnosis Result</h3>
+                    <div class="result-diagnosis">
+                        <strong>Diagnosis:</strong> ${data.diagnosis}
+                    </div>
+                    <div class="result-confidence">
+                        <strong>Confidence:</strong> ${data.confidence}%
+                    </div>
+                    <div class="probability-bars">
+                        <div class="probability-item">
+                            <span>Benign:</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill benign" style="width: ${data.probability_benign}%"></div>
+                            </div>
+                            <span>${data.probability_benign}%</span>
+                        </div>
+                        <div class="probability-item">
+                            <span>Malignant:</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill malignant" style="width: ${data.probability_malignant}%"></div>
+                            </div>
+                            <span>${data.probability_malignant}%</span>
+                        </div>
+                    </div>
+                    <div class="risk-level">
+                        <strong>Risk Assessment:</strong> ${data.risk_level}
+                    </div>
+                    <div class="result-footer">
+                        <small>⏰ Analysis Time: ${data.timestamp}</small>
+                    </div>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        // Display upload error
+        function displayUploadError(message) {
+            const resultDiv = document.getElementById('uploadResult');
+            resultDiv.innerHTML = `
+                <div class="result-error">
+                    <h3>❌ Error</h3>
+                    <p>${message}</p>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        // Handle single prediction
+        async function handleSinglePredict(event) {
+            event.preventDefault();
+            const form = document.getElementById('predictionForm');
+            const formData = new FormData(form);
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                loading.style.display = 'none';
+                if (data.success) {
+                    displayResult(data);
+                } else {
+                    displayError(data.error);
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                displayError('Network error. Please try again.');
+            }
+        }
+
+        function displayResult(data) {
+            const resultDiv = document.getElementById('result');
+            const isMalignant = data.prediction === 1;
+            const resultClass = isMalignant ? 'result-malignant' : 'result-benign';
+            resultDiv.innerHTML = `
+                <div class="${resultClass}">
+                    <h3>${isMalignant ? '⚠️' : '✅'} Prediction Result</h3>
+                    <div class="result-diagnosis"><strong>Diagnosis:</strong> ${data.diagnosis}</div>
+                    <div class="result-confidence"><strong>Confidence:</strong> ${data.confidence}%</div>
+                    <div class="probability-bars">
+                        <div class="probability-item">
+                            <span>Benign:</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill benign" style="width: ${data.probability_benign}%"></div>
+                            </div>
+                            <span>${data.probability_benign}%</span>
+                        </div>
+                        <div class="probability-item">
+                            <span>Malignant:</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill malignant" style="width: ${data.probability_malignant}%"></div>
+                            </div>
+                            <span>${data.probability_malignant}%</span>
+                        </div>
+                    </div>
+                    <div class="risk-level"><strong>Risk Assessment:</strong> ${data.risk_level}</div>
+                    <div class="result-footer"><small>⏰ Timestamp: ${data.timestamp}</small></div>
+                </div>
+            `;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function displayError(message) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<div class="result-error"><h3>❌ Error</h3><p>${message}</p></div>`;
+            resultDiv.style.display = 'block';
+        }
+
+        function resetForm() {
+            document.getElementById('predictionForm').reset();
+            document.getElementById('result').style.display = 'none';
+        }
+
+        let selectedFile = null;
+
+        function handleFileSelect(event) {
+            selectedFile = event.target.files[0];
+            if (selectedFile) {
+                document.getElementById('fileInfo').innerHTML = `
+                    <p>✅ Selected file: <strong>${selectedFile.name}</strong></p>
+                    <p>Size: ${(selectedFile.size / 1024).toFixed(2)} KB</p>
+                `;
+                document.getElementById('fileInfo').style.display = 'block';
+                document.getElementById('uploadBtn').style.display = 'block';
+            }
+        }
+
+        const uploadArea = document.getElementById('uploadArea');
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, e => { e.preventDefault(); e.stopPropagation(); }, false);
+        });
+        ['dragenter', 'dragover'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.add('drag-over'), false);
+        });
+        ['dragleave', 'drop'].forEach(eventName => {
+            uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('drag-over'), false);
+        });
+        uploadArea.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('csvFile').files = files;
+                handleFileSelect({ target: { files: files } });
+            }
+        });
+
+        async function handleBatchUpload() {
+            if (!selectedFile) {
+                alert('Please select a file first');
+                return;
+            }
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            const loading = document.getElementById('batchLoading');
+            const result = document.getElementById('batchResult');
+            loading.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                const response = await fetch('/predict_batch', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                loading.style.display = 'none';
+                if (data.success) {
+                    displayBatchResults(data);
+                } else {
+                    displayBatchError(data.error);
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                displayBatchError('Network error. Please try again.');
+            }
+        }
+
+        function displayBatchResults(data) {
+            const resultDiv = document.getElementById('batchResult');
+            let tableRows = '';
+            data.results.forEach(r => {
+                const rowClass = r.prediction === 1 ? 'row-malignant' : 'row-benign';
+                tableRows += `
+                    <tr class="${rowClass}">
+                        <td>${r.record_id}</td>
+                        <td>${r.diagnosis}</td>
+                        <td>${r.confidence}%</td>
+                        <td>${r.probability_benign}%</td>
+                        <td>${r.probability_malignant}%</td>
+                        <td>${r.risk_level}</td>
+                    </tr>
+                `;
+            });
+            resultDiv.innerHTML = `
+                <div class="batch-summary">
+                    <h3>📊 Batch Prediction Summary</h3>
+                    <div class="summary-stats">
+                        <div class="summary-item"><span class="summary-label">Total Records:</span><span class="summary-value">${data.summary.total_records}</span></div>
+                        <div class="summary-item benign-bg"><span class="summary-label">Benign:</span><span class="summary-value">${data.summary.benign_count}</span></div>
+                        <div class="summary-item malignant-bg"><span class="summary-label">Malignant:</span><span class="summary-value">${data.summary.malignant_count}</span></div>
+                        <div class="summary-item"><span class="summary-label">Avg Confidence:</span><span class="summary-value">${data.summary.avg_confidence}%</span></div>
+                    </div>
+                </div>
+                <div class="results-table-container">
+                    <table class="results-table">
+                        <thead><tr><th>Record ID</th><th>Diagnosis</th><th>Confidence</th><th>Benign %</th><th>Malignant %</th><th>Risk Level</th></tr></thead>
+                        <tbody>${tableRows}</tbody>
+                    </table>
+                </div>
+                <div class="batch-footer"><small>⏰ Completed: ${data.timestamp}</small></div>
+            `;
+            resultDiv.style.display = 'block';
+            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function displayBatchError(message) {
+            const resultDiv = document.getElementById('batchResult');
+            resultDiv.innerHTML = `<div class="result-error"><h3>❌ Error</h3><p>${message}</p></div>`;
+            resultDiv.style.display = 'block';
+        }
+
+        // Toggle About Modal
+        function toggleAboutModal() {
+            const modal = document.getElementById('aboutModal');
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // Generic Modal Toggle Function
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+            } else {
+                console.error('Modal not found:', modalId);
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = ['aboutModal', 'featuresModal', 'howItWorksModal', 'documentationModal', 'privacyModal', 'supportModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (modal && event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        // Theme Toggle
+        function toggleTheme() {
+            const body = document.body;
+            const isDark = body.classList.toggle('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+                document.getElementById('themeToggle').checked = true;
+            }
+        });
+    </script>
+</body>
+</html>
