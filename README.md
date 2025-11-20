@@ -9,9 +9,6 @@
 
 ---
 
-
----
-
 ## 📑 Abstract
 This project is developed as a part of my B.Tech CSE 5th semester at Invertis University, Bareilly. It presents a complete pipeline for breast cancer detection using machine learning, covering data analysis, model building, evaluation, and a user-friendly web application for real-time predictions. The aim is to assist healthcare professionals in early and accurate diagnosis of breast cancer using the Wisconsin Diagnostic dataset, and to demonstrate practical ML deployment skills as a student project.
 
